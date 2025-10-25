@@ -1,24 +1,26 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
+import HeroSection from './components/HeroSection'
+import AddTransactionForm from './components/AddTransactionForm'
+import AnalyticsOverview from './components/AnalyticsOverview'
+import InsightsPanel from './components/InsightsPanel'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [refreshKey, setRefreshKey] = useState(0)
+  const refreshAll = useCallback(() => setRefreshKey(k => k + 1), [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
+      <div className="mx-auto max-w-6xl p-4 sm:p-6">
+        <HeroSection />
+
+        <div className="mt-8 grid grid-cols-1 xl:grid-cols-3 gap-6">
+          <div className="xl:col-span-2 space-y-6">
+            <AddTransactionForm onAdded={refreshAll} />
+            <AnalyticsOverview refreshSignal={refreshKey} />
+          </div>
+          <div className="xl:col-span-1 space-y-6">
+            <InsightsPanel refreshSignal={refreshKey} />
+          </div>
         </div>
       </div>
     </div>
